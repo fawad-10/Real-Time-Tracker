@@ -1,5 +1,12 @@
+// api/track.js
 const express = require("express");
 const app = express();
+
+app.get("/api/track", (req, res) => {
+  res.json({ message: "Tracking data" });
+});
+// const express = require("express");
+// const app = express();
 
 //defining path
 const path = require("path");
@@ -8,13 +15,14 @@ const path = require("path");
 
 const socketio = require("socket.io");
 const http = require("http");
+const { createConnection } = require("net");
 const server = http.createServer(app);
 const io = socketio(server);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "..", "views"));
 // Serve static files from the "public" directory
-app.use(express.static("..", "public"));
+app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   socket.on("send-location", (data) => {
@@ -31,3 +39,5 @@ app.get("/", (req, res) => {
 });
 
 server.listen(3000);
+
+module.exports = app;
