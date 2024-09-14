@@ -1,15 +1,16 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "app.js",
+      "src": "./app.js",
       "use": "@vercel/node"
     },
     {
-      "src": "public/**/*",
+      "src": "./public/**/*",
       "use": "@vercel/static"
     },
     {
-      "src": "views/**/*",
+      "src": "./views/**/*",
       "use": "@vercel/static"
     }
   ],
