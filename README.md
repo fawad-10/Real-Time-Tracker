@@ -87,19 +87,4 @@ This app is designed as a demo and is not optimized for high traffic or large-sc
 
 Contributions are welcome! Please fork the repository and create a pull request for any improvements or bug fixes.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
-
-### Key Sections:
-
-- **Features**: Highlights what the app does.
-- **Installation**: Provides detailed steps on how to set up and run the app locally.
-- **Usage**: Explains how users can interact with the app once it's running.
-- **File Structure**: Offers a quick overview of the project files and organization.
-- **Dependencies**: Lists the key libraries used in the project.
-- **Future Improvements**: Mentions areas for growth if this app were to be scaled or enhanced.
-- **Contributing**: Encourages community contributions.
-
 Feel free to modify this based on your specific preferences and needs.
