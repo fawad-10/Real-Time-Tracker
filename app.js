@@ -1,34 +1,33 @@
 const express = require("express");
-const app = express();
-
-//defining path
 const path = require("path");
-
-//Boiler Plate for Socket.Io
-
-const socketio = require("socket.io");
 const http = require("http");
-const { createConnection } = require("net");
+const socketio = require("socket.io");
+
+const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
 io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
   socket.on("send-location", (data) => {
-    io.emit("recieve-location", { id: socket.id, ...data });
+    io.emit("receive-location", { id: socket.id, ...data });
   });
-  socket.on("disconnected", () => {
-    socket.emit("user-disconnected", socket.id);
+
+  socket.on("disconnect", () => {
+    io.emit("user-disconnected", socket.id);
+    console.log("User disconnected:", socket.id);
   });
-  console.log("a user connected");
 });
 
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-server.listen(3000);
+server.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
