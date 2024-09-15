@@ -4,7 +4,7 @@ const emitInterval = 5000; // Every 5 seconds
 
 navigator.geolocation.watchPosition(
   (position) => {
-    const currentTime = Date.now();
+    const currentTime = new Date().getTime();
     if (currentTime - lastEmitTime > emitInterval) {
       const { latitude, longitude } = position.coords;
       socket.emit("send-location", { latitude, longitude });
@@ -21,21 +21,21 @@ navigator.geolocation.watchPosition(
   }
 );
 
-const map = L.map("map").setView([0, 0], 5); // Initialize the map with a default view
+const map = L.map("map").setView([0, 0], 5); // setView([coords] , zoom)
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
-    '&copy; <a target="_blank" href="https://www.github.com/fawad-10" style="font-weight: bold;">Ahmed Fawad Awan</a>',
+    '&copy; <a target=_blank href="https://www.github.com/fawad-10" style="font-weight : bold;">Ahmed Fawad Awan  </a>',
 }).addTo(map);
 
 const markers = {};
+
 let mapCentered = false;
 
-socket.on("receive-location", (data) => {
-  // Fixed spelling from 'recieve-location' to 'receive-location'
+socket.on("recieve-location", (data) => {
   const { id, latitude, longitude } = data;
 
-  // Center the map only if it hasn't been centered yet
+  // Center only if it's the first time the user's location is received
   if (!mapCentered) {
     map.setView([latitude, longitude], 16);
     mapCentered = true;
