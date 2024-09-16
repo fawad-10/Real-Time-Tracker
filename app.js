@@ -11,14 +11,14 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
-io.on("connection", (socket) => {
+io.on("connection", function (socket) {
   console.log("A user connected:", socket.id);
 
-  socket.on("send-location", (data) => {
+  socket.on("send-location", function (data) {
     io.emit("receive-location", { id: socket.id, ...data });
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", function () {
     io.emit("user-disconnected", socket.id);
     console.log("User disconnected:", socket.id);
   });
