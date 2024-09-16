@@ -1,5 +1,15 @@
 const socket = io();
 
+// Show loading spinner
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loading-spinner").style.display = "block";
+});
+
+// Hide loading spinner when page and scripts are fully loaded
+window.addEventListener("load", () => {
+  document.getElementById("loading-spinner").style.display = "none";
+});
+
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
     (position) => {
@@ -24,31 +34,34 @@ if (navigator.geolocation) {
   );
 }
 
-const map = L.map("map").setView([0, 0], 16); // setView([coords] , zoom)
+const map = L.map("map").setView([0, 0], 16); // Default view (initial)
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution:
-    '&copy; <a target=_blank href="https://www.github.com/fawad-10" style="font-weight : bold;">Ahmed Fawad Awan  </a>',
+    '&copy; <a target="_blank" href="https://www.github.com/fawad-10" style="font-weight : bold;">Ahmed Fawad Awan</a>',
 }).addTo(map);
 
 const markers = {};
 
-socket.on("recieve-location", (data) => {
+// Corrected event name: "receive-location"
+socket.on("receive-location", (data) => {
   const { id, latitude, longitude } = data;
 
-  // Center only if it's the first time the user's location is received
-  map.setView([latitude, longitude]);
+  // Center the map on the first location received
+  if (!markers[id]) {
+    map.setView([latitude, longitude], 16);
+  }
 
+  // Update or create markers for each user
   if (markers[id]) {
     markers[id].setLatLng([latitude, longitude]);
   } else {
-    markers[id] = L.marker([latitude, longitude])
-      // .bindPopup("You are here")
-      .addTo(map);
+    markers[id] = L.marker([latitude, longitude]).addTo(map);
   }
 });
 
+// Remove marker when a user disconnects
 socket.on("user-disconnected", (id) => {
   if (markers[id]) {
     map.removeLayer(markers[id]);
